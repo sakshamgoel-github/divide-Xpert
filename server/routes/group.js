@@ -61,8 +61,8 @@ router.put("/:id/deleteUser/:userId", async (req, res) => {
     group.members.remove(userId);
     if (group.members.length == 0) {
       await Group.findByIdAndDelete(id);
-      return res.status(204).json({message:"Group deleted"});
-    }  
+      return res.status(204).json({ message: "Group deleted" });
+    }
     await group.save();
     res.status(201).json(group);
   } catch (error) {
@@ -100,20 +100,23 @@ async function getGroup(req, res, next) {
   res.group = group;
   next();
 }
+
 async function validateMembers(req, res, next) {
   let { members } = req.body;
   members = [...new Set(members)]; //removing duplicate members from array of members
   try {
     for (let i = 0; i < members.length; i++) {
-      const memberId = new mongoose.Types.ObjectId(members[i]);
-      const m = await User.findById(memberId);
-      if (m == null) {
-        return res.status(404).json({ message: "Invalid member id found" });
+      const memberEmail = members[i];
+      const m = await User.findOne({ email: memberEmail });
+      if (!m) {
+        return res.status(404).json({ message: "Invalid member email found" });
       }
+      members[i] = m._id;
     }
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
+  console.log(members)
   req.body.members = members; //assigning updated members [with no duplicates] to the request body
   next();
 }
