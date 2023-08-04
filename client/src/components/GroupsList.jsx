@@ -11,9 +11,6 @@ const GroupsList = () => {
   return (
     <div>
       <h1>Groups List</h1>
-      <Link to={"/"}>Home</Link>
-      <br />
-      <Link to={"new"}>Add Group</Link>
       {groupsList.map((group) => (
         <div key={group._id}>
           <h2>{group.name}</h2>

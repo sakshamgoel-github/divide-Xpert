@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 function ViewGroup() {
@@ -7,20 +7,20 @@ function ViewGroup() {
   const { id } = useParams();
   const [group, setGroup] = useState(null);
 
-  useEffect(() => {
-    async function fetchGroupDetails() {
-      try {
-        const response = await axios.get(`http://localhost:3000/groups/${id}`);
-        setGroup(response.data);
-      } catch (error) {
-        console.error("Error fetching group details:", error.message);
-      }
+  async function fetchGroupDetails() {
+    try {
+      const response = await axios.get(`http://localhost:3000/groups/${id}`);
+      setGroup(response.data);
+    } catch (error) {
+      console.error("Error fetching group details:", error.message);
     }
-
+  }
+  useEffect(() => {
     fetchGroupDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  const handleDelete = async () => {
+  const handleDeleteGroup = async () => {
     try {
       await axios.delete(`http://localhost:3000/groups/${id}`);
       navigate("/groups"); // Use navigate to go back to home page
@@ -29,8 +29,20 @@ function ViewGroup() {
     }
   };
 
+  const handleDeleteMember = async (userId) => {
+    try {
+      await axios.put(
+        `http://localhost:3000/groups/${id}/deleteUser/${userId}`
+      );
+      // Refresh the group details after deleting the member
+      fetchGroupDetails();
+    } catch (error) {
+      console.error("Error deleting member:", error.message);
+    }
+  };
+
   return (
-    <div>
+    <>
       <h1>Group Details</h1>
       {group ? (
         <>
@@ -39,16 +51,22 @@ function ViewGroup() {
           <h3>Members:</h3>
           <ul>
             {group.members.map((member) => (
-              <li key={member._id}>{member.name}</li>
+              <li key={member._id}>
+                {member.name}{" "}
+                {group.members.length > 1 && ( // Only render delete button if more than one member
+                  <button onClick={() => handleDeleteMember(member._id)}>
+                    Delete Member
+                  </button>
+                )}
+              </li>
             ))}
           </ul>
-          <button onClick={handleDelete}>Delete Group</button>
+          <button onClick={handleDeleteGroup}>Delete Group</button>
         </>
       ) : (
         <p>Loading group details...</p>
       )}
-      <Link to="/groups">All Groups</Link>
-    </div>
+    </>
   );
 }
 
