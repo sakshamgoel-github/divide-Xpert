@@ -6,15 +6,24 @@ const mongoose = require("mongoose");
 
 router.get("/", async (req, res) => {
   try {
-    const groups = await Group.find();
+    const groups = await Group.find().populate("members","name");
     res.json(groups);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-router.get("/:id", getGroup, (req, res) => {
-  res.json(res.group);
+router.get("/:id", async (req, res) => {
+  const {id} = req.params;
+  try {
+    const group = await Group.findById(id).populate("members","name");
+    if (group == null) {
+      return res.status(404).json({ message: "Cannot get the group" });
+    }
+    res.json(group);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 router.post("/", validateMembers, async (req, res) => {
@@ -25,12 +34,12 @@ router.post("/", validateMembers, async (req, res) => {
   try {
     const group = await newGroup.save();
     for (let index = 0; index < group.members.length; index++) {
-      const element = group.members[index];
-      const user = await User.findById(element);
+      const user = req.body.members[index];
+      // const user = await User.findById(element);
       user.groups.push(group);
       await user.save();
     }
-    res.status(201).json(group);
+    res.status(201).json({id:group._id});
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -86,21 +95,6 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-async function getGroup(req, res, next) {
-  let group;
-  try {
-    group = await Group.findById(req.params.id).populate("members");
-    if (group == null) {
-      return res.status(404).json({ message: "Cannot get the group" });
-    }
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
-
-  res.group = group;
-  next();
-}
-
 async function validateMembers(req, res, next) {
   let { members } = req.body;
   members = [...new Set(members)]; //removing duplicate members from array of members
@@ -111,12 +105,11 @@ async function validateMembers(req, res, next) {
       if (!m) {
         return res.status(404).json({ message: "Invalid member email found" });
       }
-      members[i] = m._id;
+      members[i] = m;
     }
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-  console.log(members)
   req.body.members = members; //assigning updated members [with no duplicates] to the request body
   next();
 }

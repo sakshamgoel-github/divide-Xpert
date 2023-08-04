@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function NewGroupForm() {
+  const navigate = useNavigate();
   const [groupName, setGroupName] = useState("");
   const [members, setMembers] = useState([{ id: 1, email: "" }]);
 
@@ -34,19 +36,16 @@ function NewGroupForm() {
       name: groupName,
       members: memberEmails,
     };
-    console.log(JSON.stringify(formData));
     try {
       // Send POST request using Axios
-      const response = await axios.post(
-        "http://localhost:3000/groups/",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log("Response from API:", response.data);
+      await axios.post("http://localhost:3000/groups/", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((response) => {
+        const {id} = response.data;
+        navigate(`/groups/${id}`);
+      });
     } catch (error) {
       console.error("Error creating group:", error.message);
     }
