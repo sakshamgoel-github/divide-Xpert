@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Group = require("../models/group");
 const User = require("../models/user");
-const mongoose = require("mongoose");
 
 router.get("/", async (req, res) => {
   try {
@@ -35,7 +34,6 @@ router.post("/", validateMembers, async (req, res) => {
     const group = await newGroup.save();
     for (let index = 0; index < group.members.length; index++) {
       const user = req.body.members[index];
-      // const user = await User.findById(element);
       user.groups.push(group);
       await user.save();
     }

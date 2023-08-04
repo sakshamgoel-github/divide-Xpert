@@ -6,6 +6,7 @@ function NewGroupForm() {
   const navigate = useNavigate();
   const [groupName, setGroupName] = useState("");
   const [members, setMembers] = useState([{ id: 1, email: "" }]);
+  const [error, setError] = useState(""); // State for displaying error message
 
   const handleMemberEmailChange = (id, newEmail) => {
     const updatedMembers = members.map((member) => {
@@ -32,6 +33,12 @@ function NewGroupForm() {
     const memberEmails = members
       .filter((member) => member.email.length > 0)
       .map((member) => member.email);
+
+    if (!isValidEmails(memberEmails)) {
+      setError("Invalid email format");
+      return;
+    }
+
     const formData = {
       name: groupName,
       members: memberEmails,
@@ -43,17 +50,32 @@ function NewGroupForm() {
           "Content-Type": "application/json",
         },
       }).then((response) => {
+        // Reset input fields after successful submission
+        setGroupName("");
+        setMembers([{ id: 1, email: "" }]);
+        setError(""); // Clear error message
         const {id} = response.data;
-        navigate(`/groups/${id}`);
+        navigate(`/groups/${id}`); 
       });
     } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message); // Set error message from server response
+      } else {
+        setError("Error creating group");
+      }
       console.error("Error creating group:", error.message);
     }
+  };
+
+  const isValidEmails = (emails) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emails.every((email) => emailPattern.test(email));
   };
 
   return (
     <>
       <h1>Create Group</h1>
+      {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
         <label htmlFor="groupName">Group Name</label>
         <input
