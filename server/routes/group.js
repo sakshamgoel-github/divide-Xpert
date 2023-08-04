@@ -5,7 +5,7 @@ const User = require("../models/user");
 
 router.get("/", async (req, res) => {
   try {
-    const groups = await Group.find().populate("members","name");
+    const groups = await Group.find().populate("members", "name");
     res.json(groups);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -13,9 +13,9 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   try {
-    const group = await Group.findById(id).populate("members","name");
+    const group = await Group.findById(id).populate("members", "name");
     if (group == null) {
       return res.status(404).json({ message: "Cannot get the group" });
     }
@@ -37,17 +37,25 @@ router.post("/", validateMembers, async (req, res) => {
       user.groups.push(group);
       await user.save();
     }
-    res.status(201).json({id:group._id});
+    res.status(201).json({ id: group._id });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
 
-router.put("/:id/addUser/:userId", async (req, res) => {
-  const { id, userId } = req.params;
+router.put("/:id/addUser", async (req, res) => {
+  const { id } = req.params;
+  const { email } = req.body;
   try {
-    const user = await User.findById(userId);
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(404).json({ message: "Invalid member email found" });
     const group = await Group.findById(id);
+
+    if (group.members.includes(user._id)) {
+      return res.status(400).json({ message: "Member already exists in the group" });
+    }
+    
     user.groups.push(group);
     group.members.push(user);
     await user.save();

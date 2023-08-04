@@ -6,6 +6,9 @@ function ViewGroup() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [group, setGroup] = useState(null);
+  const [addMemberForm, setAddMemberForm] = useState(false);
+  const [addMemberEmail, setAddMemberEmail] = useState("");
+  const [error, setError] = useState("");
 
   async function fetchGroupDetails() {
     try {
@@ -41,6 +44,35 @@ function ViewGroup() {
     }
   };
 
+  const addMemberFormSubmit = async (e) => {
+    e.preventDefault();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(addMemberEmail)) {
+      setError("Invalid email format");
+      return;
+    }
+    try {
+      await axios.put(
+        `http://localhost:3000/groups/${id}/addUser`,
+        { email: addMemberEmail } // Send member email in the request body
+      );
+      setAddMemberEmail(""); // Clear the input field
+      setAddMemberForm(false); // Close the form
+      setError("");
+      fetchGroupDetails(); // Refresh group details
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setError(error.response.data.message);
+      } else {
+        setError("An error occurred while adding the member.");
+      }
+    }
+  };
+
   return (
     <>
       <h1>Group Details</h1>
@@ -62,6 +94,28 @@ function ViewGroup() {
             ))}
           </ul>
           <button onClick={handleDeleteGroup}>Delete Group</button>
+          <button
+            onClick={() => {
+              setAddMemberForm(true);
+            }}
+          >
+            Add Member
+          </button>
+          {error && <p>{error}</p>}
+          {addMemberForm && (
+            <form onSubmit={addMemberFormSubmit}>
+              <label htmlFor="memberEmail">Member Email</label>
+              <input
+                id="memberEmail"
+                type="email"
+                value={addMemberEmail}
+                onChange={(e) => {
+                  setAddMemberEmail(e.target.value);
+                }}
+              />
+              <button type="submit">submit</button>
+            </form>
+          )}
         </>
       ) : (
         <p>Loading group details...</p>
