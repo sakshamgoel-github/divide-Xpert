@@ -62,19 +62,19 @@ router.post("/login", async (req, res) => {
   }
 });
 
-async function getUser(req, res, next) {
-  let user;
-  try {
-    user = await User.findById(req.params.id).populate("groups");
-    if (user == null) {
-      return res.status(404).json({ message: "Cannot get the user" });
-    }
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
-  res.user = user;
-  next();
-}
+// async function getUser(req, res, next) {
+//   let user;
+//   try {
+//     user = await User.findById(req.params.id).populate("groups");
+//     if (user == null) {
+//       return res.status(404).json({ message: "Cannot get the user" });
+//     }
+//   } catch (error) {
+//     return res.status(500).json({ message: error.message });
+//   }
+//   res.user = user;
+//   next();
+// }
 
 const generateJWT = (id) => {
   return jwt.sign({id},process.env.JWT_SECRET,{

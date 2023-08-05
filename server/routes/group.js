@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Group = require("../models/group");
 const User = require("../models/user");
+const protect = require("../authMiddleware");
 
-router.get("/", async (req, res) => {
+router.get("/", protect, async (req, res) => {
   try {
-    const groups = await Group.find().populate("members", "name");
+    const groups = req.user.groups;
     res.json(groups);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -25,7 +26,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", validateMembers, async (req, res) => {
+router.post("/", protect, validateMembers, async (req, res) => {
   const newGroup = new Group({
     name: req.body.name,
     members: req.body.members,
@@ -53,9 +54,11 @@ router.put("/:id/addUser", async (req, res) => {
     const group = await Group.findById(id);
 
     if (group.members.includes(user._id)) {
-      return res.status(400).json({ message: "Member already exists in the group" });
+      return res
+        .status(400)
+        .json({ message: "Member already exists in the group" });
     }
-    
+
     user.groups.push(group);
     group.members.push(user);
     await user.save();
@@ -113,10 +116,11 @@ async function validateMembers(req, res, next) {
       }
       members[i] = m;
     }
+    members.push(req.user);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-  req.body.members = members; //assigning updated members [with no duplicates] to the request body
+  req.body.members = [...new Set(members)]; //assigning updated members [with no duplicates] to the request body
   next();
 }
 module.exports = router;
