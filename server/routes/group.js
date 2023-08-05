@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Group = require("../models/group");
 const User = require("../models/user");
-const protect = require("../authMiddleware");
+const { protect, isAuthorized } = require("../authMiddleware");
 
 router.get("/", protect, async (req, res) => {
   try {
@@ -13,7 +13,7 @@ router.get("/", protect, async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", protect, isAuthorized, async (req, res) => {
   const { id } = req.params;
   try {
     const group = await Group.findById(id).populate("members", "name");
@@ -44,7 +44,7 @@ router.post("/", protect, validateMembers, async (req, res) => {
   }
 });
 
-router.put("/:id/addUser", async (req, res) => {
+router.put("/:id/addUser",protect,isAuthorized, async (req, res) => {
   const { id } = req.params;
   const { email } = req.body;
   try {
@@ -69,7 +69,7 @@ router.put("/:id/addUser", async (req, res) => {
   }
 });
 
-router.put("/:id/deleteUser/:userId", async (req, res) => {
+router.put("/:id/deleteUser/:userId",protect,isAuthorized, async (req, res) => {
   const { userId, id } = req.params;
   try {
     const user = await User.findById(userId);
@@ -88,7 +88,7 @@ router.put("/:id/deleteUser/:userId", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id",protect,isAuthorized, async (req, res) => {
   try {
     const { id } = req.params;
     const group = await Group.findById(id);

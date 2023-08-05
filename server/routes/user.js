@@ -2,7 +2,7 @@ const express = require("express");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const protect = require("../authMiddleware");
+const { protect } = require("../authMiddleware");
 const router = express.Router();
 
 router.get("/user", async (req, res) => {
@@ -14,7 +14,7 @@ router.get("/user", async (req, res) => {
   }
 });
 
-router.get("/me",protect,(req, res) => {
+router.get("/me", protect, (req, res) => {
   res.json(req.user);
 });
 
@@ -36,7 +36,7 @@ router.post("/register", async (req, res) => {
       name: user.name,
       email: user.email,
       groups: user.groups,
-      token:generateJWT(user._id)
+      token: generateJWT(user._id),
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -53,7 +53,7 @@ router.post("/login", async (req, res) => {
         name: user.name,
         email: user.email,
         groups: user.groups,
-        token:generateJWT(user._id)
+        token: generateJWT(user._id),
       });
     }
     return res.status(400).json({ message: "Invalid user credentials" });
@@ -77,9 +77,9 @@ router.post("/login", async (req, res) => {
 // }
 
 const generateJWT = (id) => {
-  return jwt.sign({id},process.env.JWT_SECRET,{
-    expiresIn:'30d'
-  })
-}
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "30d",
+  });
+};
 
 module.exports = router;
