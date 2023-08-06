@@ -44,27 +44,6 @@ function ViewGroup() {
     }
   };
 
-  // const handleDeleteMember = async (userId) => {
-  //   try {
-  //     let user = localStorage.getItem("user");
-  //     user = JSON.parse(user);
-  //     await axios.put(
-  //       `http://localhost:3000/groups/${id}/deleteUser/${userId}`,
-  //       null,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${user.token}`,
-  //         },
-  //       }
-  //     );
-  //     // Refresh the group details after deleting the member
-  //     navigate("/groups");
-  //     fetchGroupDetails();
-  //   } catch (error) {
-  //     console.error("Error deleting member:", error.message);
-  //   }
-  // };
-
   const handleLeaveGroup = async () => {
     try {
       let user = localStorage.getItem("user");
@@ -128,14 +107,7 @@ function ViewGroup() {
           <h3>Members:</h3>
           <ul>
             {group.members.map((member) => (
-              <li key={member._id}>
-                {member.name}{" "}
-                {/* {group.members.length > 1 && ( // Only render delete button if more than one member
-                  <button onClick={() => handleDeleteMember(member._id)}>
-                    Delete Member
-                  </button>
-                )} */}
-              </li>
+              <li key={member._id}>{member.name} </li>
             ))}
           </ul>
           {group.members.length > 1 && (

@@ -75,25 +75,6 @@ router.put("/:id/addUser",protect,isAuthorized, async (req, res) => {
   }
 });
 
-router.put("/:id/deleteUser/:userId",protect,isAuthorized, async (req, res) => {
-  const { userId, id } = req.params;
-  try {
-    const user = await User.findById(userId);
-    const group = await Group.findById(id);
-    user.groups.remove(id);
-    await user.save();
-    group.members.remove(userId);
-    if (group.members.length == 0) {
-      await Group.findByIdAndDelete(id);
-      return res.status(204).json({ message: "Group deleted" });
-    }
-    await group.save();
-    res.status(201).json(group);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
 router.delete("/:id/leaveGroup", protect, async (req, res) => {
   const groupId = req.params.id;
   const userId = req.user._id;
