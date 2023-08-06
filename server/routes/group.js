@@ -7,7 +7,13 @@ const { protect, isAuthorized } = require("../authMiddleware");
 router.get("/", protect, async (req, res) => {
   try {
     const groups = req.user.groups;
-    res.json(groups);
+    // Convert ObjectId references to strings
+    const groupIds = groups.map(groupId => groupId.toString());
+    
+    // Fetch the group objects using the parsed _id values
+    const groupObjects = await Group.find({ _id: { $in: groupIds } });
+
+    return res.status(200).json(groupObjects);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

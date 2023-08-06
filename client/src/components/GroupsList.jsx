@@ -4,7 +4,13 @@ import axios from "axios";
 const GroupsList = () => {
   const [groupsList, setGroupsList] = useState([]);
   useEffect(() => {
-    axios.get("http://localhost:3000/groups").then((response) => {
+    let user = localStorage.getItem('user');
+    user = JSON.parse(user);
+    axios.get("http://localhost:3000/groups", {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    }).then((response) => {
       setGroupsList(response.data);
     });
   }, []);

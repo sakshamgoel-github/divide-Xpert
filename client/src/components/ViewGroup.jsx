@@ -12,7 +12,13 @@ function ViewGroup() {
 
   async function fetchGroupDetails() {
     try {
-      const response = await axios.get(`http://localhost:3000/groups/${id}`);
+      let user = localStorage.getItem("user");
+      user = JSON.parse(user);
+      const response = await axios.get(`http://localhost:3000/groups/${id}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
       setGroup(response.data);
     } catch (error) {
       console.error("Error fetching group details:", error.message);
@@ -25,7 +31,13 @@ function ViewGroup() {
 
   const handleDeleteGroup = async () => {
     try {
-      await axios.delete(`http://localhost:3000/groups/${id}`);
+      let user = localStorage.getItem("user");
+      user = JSON.parse(user);
+      await axios.delete(`http://localhost:3000/groups/${id}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
       navigate("/groups"); // Use navigate to go back to home page
     } catch (error) {
       console.error("Error deleting group:", error.message);
@@ -34,8 +46,16 @@ function ViewGroup() {
 
   const handleDeleteMember = async (userId) => {
     try {
+      let user = localStorage.getItem("user");
+      user = JSON.parse(user);
       await axios.put(
-        `http://localhost:3000/groups/${id}/deleteUser/${userId}`
+        `http://localhost:3000/groups/${id}/deleteUser/${userId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       // Refresh the group details after deleting the member
       fetchGroupDetails();
@@ -52,9 +72,18 @@ function ViewGroup() {
       return;
     }
     try {
+      let user = localStorage.getItem("user");
+      user = JSON.parse(user);
       await axios.put(
         `http://localhost:3000/groups/${id}/addUser`,
-        { email: addMemberEmail } // Send member email in the request body
+        {
+          email: addMemberEmail,
+        }, // Send member email in the request body
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setAddMemberEmail(""); // Clear the input field
       setAddMemberForm(false); // Close the form

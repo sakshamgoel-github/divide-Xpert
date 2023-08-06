@@ -31,7 +31,7 @@ router.post("/register", async (req, res) => {
     const newUser = new User({ name, email, password: hashedPassword });
     const user = await newUser.save();
 
-    res.status(201).json({
+    return res.status(201).json({
       _id: user.id,
       name: user.name,
       email: user.email,
@@ -39,7 +39,7 @@ router.post("/register", async (req, res) => {
       token: generateJWT(user._id),
     });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    return res.status(400).json({ message: error.message });
   }
 });
 
@@ -58,7 +58,7 @@ router.post("/login", async (req, res) => {
     }
     return res.status(400).json({ message: "Invalid user credentials" });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    return res.status(400).json({ message: error.message });
   }
 });
 

@@ -45,9 +45,12 @@ function NewGroupForm() {
     };
     try {
       // Send POST request using Axios
+      let user = localStorage.getItem('user');
+    user = JSON.parse(user);
       await axios.post("http://localhost:3000/groups/", formData, {
         headers: {
           "Content-Type": "application/json",
+          Authorization:`Bearer ${user.token}`,
         },
       }).then((response) => {
         // Reset input fields after successful submission
