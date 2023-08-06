@@ -44,23 +44,39 @@ function ViewGroup() {
     }
   };
 
-  const handleDeleteMember = async (userId) => {
+  // const handleDeleteMember = async (userId) => {
+  //   try {
+  //     let user = localStorage.getItem("user");
+  //     user = JSON.parse(user);
+  //     await axios.put(
+  //       `http://localhost:3000/groups/${id}/deleteUser/${userId}`,
+  //       null,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${user.token}`,
+  //         },
+  //       }
+  //     );
+  //     // Refresh the group details after deleting the member
+  //     navigate("/groups");
+  //     fetchGroupDetails();
+  //   } catch (error) {
+  //     console.error("Error deleting member:", error.message);
+  //   }
+  // };
+
+  const handleLeaveGroup = async () => {
     try {
       let user = localStorage.getItem("user");
       user = JSON.parse(user);
-      await axios.put(
-        `http://localhost:3000/groups/${id}/deleteUser/${userId}`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
-      // Refresh the group details after deleting the member
-      fetchGroupDetails();
+      await axios.delete(`http://localhost:3000/groups/${id}/leaveGroup`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      navigate("/");
     } catch (error) {
-      console.error("Error deleting member:", error.message);
+      console.error("Error leaving group:", error.message);
     }
   };
 
@@ -114,14 +130,17 @@ function ViewGroup() {
             {group.members.map((member) => (
               <li key={member._id}>
                 {member.name}{" "}
-                {group.members.length > 1 && ( // Only render delete button if more than one member
+                {/* {group.members.length > 1 && ( // Only render delete button if more than one member
                   <button onClick={() => handleDeleteMember(member._id)}>
                     Delete Member
                   </button>
-                )}
+                )} */}
               </li>
             ))}
           </ul>
+          {group.members.length > 1 && (
+            <button onClick={handleLeaveGroup}>Leave Group</button>
+          )}
           <button onClick={handleDeleteGroup}>Delete Group</button>
           <button
             onClick={() => {

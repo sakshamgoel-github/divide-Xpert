@@ -94,6 +94,29 @@ router.put("/:id/deleteUser/:userId",protect,isAuthorized, async (req, res) => {
   }
 });
 
+router.delete("/:id/leaveGroup", protect, async (req, res) => {
+  const groupId = req.params.id;
+  const userId = req.user._id;
+
+  try {
+    const group = await Group.findById(groupId);
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    // Remove the user from the group's members
+    group.members.pull(userId);
+    await group.save();
+    // Remove the group from the user's groups
+    const user = await User.findById(userId);
+    user.groups.pull(groupId);
+    await user.save();
+    res.status(200).json({ message: "Left the group successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 router.delete("/:id",protect,isAuthorized, async (req, res) => {
   try {
     const { id } = req.params;
