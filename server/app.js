@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require('cors');
-
+const optimize = require('./optimize/optimize')
 const app = express();
 app.listen(process.env.PORT,() => {console.log("Listening on PORT 3000")});
 
@@ -28,6 +28,11 @@ app.use("/groups",groupsRoutes);
 
 const userRoutes = require("./routes/user")
 app.use("/",userRoutes);
+
+app.post("/transaction",async (req,res) => {
+    const transcations = req.body;
+    res.status(200).json(optimize(transcations));
+})
 
 app.use("*",(req,res) => {
     res.status(404).json({message:"Page not found"});

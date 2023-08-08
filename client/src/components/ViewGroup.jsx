@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import Transaction from "./Transaction";
 
 function ViewGroup() {
   const navigate = useNavigate();
@@ -136,6 +137,7 @@ function ViewGroup() {
               <button type="submit">submit</button>
             </form>
           )}
+        <Transaction/>
         </>
       ) : (
         <p>Loading group details...</p>
