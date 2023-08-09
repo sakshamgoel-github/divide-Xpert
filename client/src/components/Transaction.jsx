@@ -51,6 +51,7 @@ function Transaction() {
         `http://localhost:3000/transaction`,
         transactions
       );
+      console.log(response.data)
       const size = Object.keys(response.data).length;
       if (size) setResponseData(response.data);
       else setResponseData("No transaction required");

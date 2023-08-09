@@ -31,7 +31,8 @@ app.use("/",userRoutes);
 
 app.post("/transaction",async (req,res) => {
     const transcations = req.body;
-    res.status(200).json(optimize(transcations));
+    const ans = await optimize(transcations);
+    res.status(200).json(ans);
 })
 
 app.use("*",(req,res) => {

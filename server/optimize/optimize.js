@@ -1,44 +1,80 @@
 const User = require("../models/user")
-module.exports = function optimize(transactions) {
+const PriorityQueue = require("js-priority-queue");
 
+// Wrapper class for <int, int> pairs
+class KeyValue {
+  constructor(key, value) {
+    this.key = key;
+    this.value = value;
+  }
+}
+// Create a min heap
+const minHeap = new PriorityQueue({
+  comparator: (a, b) => a.value - b.value,
+});
+// Create a max heap
+const maxHeap = new PriorityQueue({
+  comparator: (a, b) => b.value - a.value,
+});
+
+module.exports = async function optimize(transactions) {
   const friendIds = new Set();
   transactions.forEach((transaction) => {
     friendIds.add(transaction.payer);
     friendIds.add(transaction.receiver);
   });
 
+  // console.log(transactions)
   const residue = new Map();
   for (const id of friendIds) {
     residue.set(id, 0);
   }
   for (const transaction of transactions) {
-    residue.set(transaction.payer, residue.get(transaction.payer) - parseInt(transaction.amount));
-    residue.set(transaction.receiver, residue.get(transaction.receiver) + parseInt(transaction.amount));
+    residue.set(
+      transaction.payer,
+      residue.get(transaction.payer) - parseInt(transaction.amount)
+    );
+    residue.set(
+      transaction.receiver,
+      residue.get(transaction.receiver) + parseInt(transaction.amount)
+    );
   }
+  // console.log(residue)
   
-  const ans = [];
+  let ans = [];
   const flag = Array.from(residue.values()).some((value) => value !== 0);
-  if (!flag){
+  if (!flag) {
     return ans;
   }
-  const t = Array.from(residue.entries()).map(([id, value]) => [value, id]);
-  t.sort((a, b) => a[0] - b[0]);
 
-  while (t.length > 0) {
-    const p = [...t.shift()]; // Convert array to copy
-    const r = [...t.pop()];   // Convert array to copy
-    const amt = Math.min(p[0] * -1, r[0]);
-    ans.push({ payer: p[1], receiver: r[1], amount: String(amt) });
-    p[0] += amt;
-    r[0] -= amt;
-    if (p[0] < 0) {
-      t.push([p[0], p[1]]);
-      t.sort((a, b) => a[0] - b[0]);
-    } else if (r[0] > 0) {
-      t.push([r[0], r[1]]);
-      t.sort((a, b) => a[0] - b[0]);
+  for (const r of residue) {
+    if (r[1] < 0) minHeap.queue(new KeyValue(r[0], r[1]));
+    else maxHeap.queue(new KeyValue(r[0], r[1]));
+  }
+  // console.log(minHeap.length)
+  while (minHeap.length) {
+    const p = minHeap.dequeue();
+    const r = maxHeap.dequeue();
+    const amt = Math.min(p.value * -1, r.value);
+    ans.push({ payer: p.key, receiver: r.key, amount: String(amt) });
+    // console.log(ans,"dwlkjghefjge")
+    p.value += amt;
+    r.value -= amt;
+
+    if (p.value < 0) {
+      minHeap.queue(new KeyValue(p.key, p.value));
+    } else if (r.value > 0) {
+      maxHeap.queue(new KeyValue(r.key, r.value));
     }
   }
+  for(const ele of ans){
+    const payer = ele.payer
+    const receiver = ele.receiver
+    const p = await User.findById(payer)
+    const r = await User.findById(receiver)
+    ele.payer = p.name
+    ele.receiver = r.name
+  }
   return ans;
-};
+}
 
