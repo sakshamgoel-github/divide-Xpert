@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import url from "../url";
 
 const GroupsList = () => {
+  console.log(url)
   const [groupsList, setGroupsList] = useState([]);
 
   useEffect(() => {
     let user = localStorage.getItem('user');
     user = JSON.parse(user);
-    axios.get("http://localhost:3000/groups", {
+    axios.get(`${url}/groups`, {
       headers: {
         Authorization: `Bearer ${user.token}`,
       },

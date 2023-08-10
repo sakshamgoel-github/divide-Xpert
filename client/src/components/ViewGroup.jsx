@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Transaction from "./Transaction";
+import url from "../url";
 
 function ViewGroup() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ function ViewGroup() {
     try {
       let user = localStorage.getItem("user");
       user = JSON.parse(user);
-      const response = await axios.get(`http://localhost:3000/groups/${id}`, {
+      const response = await axios.get(`${url}/groups/${id}`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -34,7 +35,7 @@ function ViewGroup() {
     try {
       let user = localStorage.getItem("user");
       user = JSON.parse(user);
-      await axios.delete(`http://localhost:3000/groups/${id}`, {
+      await axios.delete(`${url}/groups/${id}`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -49,7 +50,7 @@ function ViewGroup() {
     try {
       let user = localStorage.getItem("user");
       user = JSON.parse(user);
-      await axios.delete(`http://localhost:3000/groups/${id}/leaveGroup`, {
+      await axios.delete(`${url}/groups/${id}/leaveGroup`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -71,7 +72,7 @@ function ViewGroup() {
       let user = localStorage.getItem("user");
       user = JSON.parse(user);
       await axios.put(
-        `http://localhost:3000/groups/${id}/addUser`,
+        `${url}/groups/${id}/addUser`,
         {
           email: addMemberEmail,
         }, // Send member email in the request body

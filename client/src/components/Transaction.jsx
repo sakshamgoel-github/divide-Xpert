@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
+import url from "../url";
+
 function Transaction() {
   const { id } = useParams();
   const [members, setMembers] = useState([]);
@@ -14,7 +16,7 @@ function Transaction() {
       try {
         let user = localStorage.getItem("user");
         user = JSON.parse(user);
-        const response = await axios.get(`http://localhost:3000/groups/${id}`, {
+        const response = await axios.get(`${url}/groups/${id}`, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
@@ -48,7 +50,7 @@ function Transaction() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:3000/transaction`,
+        `${url}/transaction`,
         transactions
       );
       const size = Object.keys(response.data).length;

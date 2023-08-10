@@ -1,7 +1,8 @@
 import axios from "axios";
+import url from "../../url";
 
 const register = async (userData) => {
-  const response = await axios.post("http://localhost:3000/register", userData);
+  const response = await axios.post(`${url}/register`, userData);
   if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));
   }
@@ -10,7 +11,7 @@ const register = async (userData) => {
 };
 
 const login = async (userData) => {
-  const response = await axios.post("http://localhost:3000/login", userData);
+  const response = await axios.post(`${url}/login`, userData);
   if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));
   }

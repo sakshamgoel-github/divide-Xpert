@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import url from "../url";
 
 function NewGroupForm() {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ function NewGroupForm() {
       // Send POST request using Axios
       let user = localStorage.getItem('user');
     user = JSON.parse(user);
-      await axios.post("http://localhost:3000/groups/", formData, {
+      await axios.post(`${url}/groups/`, formData, {
         headers: {
           "Content-Type": "application/json",
           Authorization:`Bearer ${user.token}`,
