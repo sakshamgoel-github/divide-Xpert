@@ -50,7 +50,7 @@ const GroupsList = () => {
   }, []);
 
   return (
-    <div className="container mt-5">
+    <div className="container pt-3">
       <h1 className="mb-4">Groups List</h1>
       {groupsList.map((group) => (
         <div className="card mb-3" key={group._id}>

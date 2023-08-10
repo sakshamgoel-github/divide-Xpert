@@ -99,7 +99,7 @@ function ViewGroup() {
   };
 
   return (
-    <div className="container mt-5 pt-5">
+    <div className="container pt-3">
       <h1>Group Details</h1>
       {group ? (
         <div>

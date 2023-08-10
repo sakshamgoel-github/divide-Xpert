@@ -5,7 +5,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import GroupsList from "./components/GroupsList";
 import NewGroupForm from "./components/NewGroupForm";
-import PageNotFound from "./components/PageNotFound";
+import PageNotFound from "./pages/PageNotFound";
 import ViewGroup from "./components/ViewGroup";
 import { Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
