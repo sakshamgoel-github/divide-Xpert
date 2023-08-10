@@ -12,8 +12,8 @@ function PageNotFound() {
       <div className="container mb-5" style={{ textAlign: "center" }}>
         <p style={{ fontSize: "200px", color: "red" }}>404Error</p>
         <p style={{ fontSize: "50px", color: "white" }}>
-          The page took a vacation and forgot to leave a forwarding
-          address...  
+          Looks like this page embarked on a journey to find the legendary
+          &lsquo;One Piece.&rsquo; We&apos;re still navigating the Grand Line
         </p>
       </div>
     </div>
