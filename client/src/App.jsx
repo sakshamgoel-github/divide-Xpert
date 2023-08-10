@@ -2,6 +2,7 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import GroupsList from "./components/GroupsList";
 import NewGroupForm from "./components/NewGroupForm";
 import PageNotFound from "./components/PageNotFound";
@@ -13,9 +14,7 @@ function App() {
   const { user } = useSelector((state) => state.auth);
   return (
     <>
-      <nav>
-        <Navbar />
-      </nav>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
@@ -31,6 +30,7 @@ function App() {
 
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      <Footer />
     </>
   );
 }

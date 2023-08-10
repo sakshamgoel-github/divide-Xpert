@@ -59,79 +59,95 @@ function Transaction() {
       console.error("Error submitting transactions:", error.message);
     }
   };
-
   return (
-    <div>
+    <div className="container mt-5">
       <h2>Create Transaction</h2>
       <form onSubmit={handleSubmit}>
         {transactions.map((transaction, index) => (
-          <div key={index}>
-            <select
-              required
-              value={transaction.payer}
-              onChange={(e) =>
-                handleInputChange(index, "payer", e.target.value)
-              }
-            >
-              <option value="">Select Payer</option>
-              {members.map((member) => (
-                <option key={member._id} value={member._id}>
-                  {member.name}
-                </option>
-              ))}
-            </select>
-            <select
-              required
-              value={transaction.receiver}
-              onChange={(e) =>
-                handleInputChange(index, "receiver", e.target.value)
-              }
-            >
-              <option value="">Select Receiver</option>
-              {members.map((member) => (
-                <option key={member._id} value={member._id}>
-                  {member.name}
-                </option>
-              ))}
-            </select>
-            <input
-              required
-              type="number"
-              placeholder="Amount"
-              value={transaction.amount}
-              onChange={(e) =>
-                handleInputChange(index, "amount", e.target.value)
-              }
-              min={0}
-            />
-            <button
-              type="button"
-              onClick={() => handleRemoveTransaction(index)}
-            >
-              Remove
-            </button>
+          <div className="form-row mb-3" key={index}>
+            <div className="col">
+              <select
+                required
+                className="form-select"
+                value={transaction.payer}
+                onChange={(e) =>
+                  handleInputChange(index, "payer", e.target.value)
+                }
+              >
+                <option value="">Select Payer</option>
+                {members.map((member) => (
+                  <option key={member._id} value={member._id}>
+                    {member.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="col">
+              <select
+                required
+                className="form-select"
+                value={transaction.receiver}
+                onChange={(e) =>
+                  handleInputChange(index, "receiver", e.target.value)
+                }
+              >
+                <option value="">Select Receiver</option>
+                {members.map((member) => (
+                  <option key={member._id} value={member._id}>
+                    {member.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="col">
+              <input
+                required
+                type="number"
+                className="form-control"
+                placeholder="Amount"
+                value={transaction.amount}
+                onChange={(e) =>
+                  handleInputChange(index, "amount", e.target.value)
+                }
+                min={0}
+              />
+            </div>
+            <div className="col">
+              <button
+                type="button"
+                className="btn btn-danger me-2 mb-2 mt-2"
+                onClick={() => handleRemoveTransaction(index)}
+              >
+                Remove
+              </button>
+            </div>
           </div>
         ))}
-        <button type="button" onClick={handleAddTransaction}>
+        <button
+          type="button"
+          className="btn btn-primary me-2 mb-2 mt-2"
+          onClick={handleAddTransaction}
+        >
           Add Transaction
         </button>
-        <button type="submit">Submit</button>
+        <button type="submit" className="btn btn-success me-2 mb-2 mt-2">
+          Submit
+        </button>
       </form>
       {responseData && (
-        <div>
-          <h3>Repsonse from server</h3>
-          {responseData == "No transaction required" ? (
-            <p>No transaction required</p>
+        <div className="mt-4 border p-3">
+          <h3>Response from server</h3>
+          {responseData === "No transaction required" ? (
+            <h5>No transaction required</h5>
           ) : (
             responseData.map((ele, ind) => (
               <div key={ind}>
-                <p>
+                <h5>
                   {ele.payer} gives {ele.receiver} = {ele.amount}
-                </p>
+                </h5>
               </div>
             ))
           )}
-          {}
         </div>
       )}
     </div>

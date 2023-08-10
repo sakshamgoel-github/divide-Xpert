@@ -99,51 +99,65 @@ function ViewGroup() {
   };
 
   return (
-    <>
+    <div className="container mt-5 pt-5">
       <h1>Group Details</h1>
       {group ? (
-        <>
+        <div>
           <h2>Group Name: {group.name}</h2>
           <p>Created At: {new Date(group.created_at).toLocaleDateString()}</p>
           <h3>Members:</h3>
-          <ul>
+          <ul className="list-group">
             {group.members.map((member) => (
-              <li key={member._id}>{member.name} </li>
+              <li className="list-group-item" key={member._id}>
+                {member.name}
+              </li>
             ))}
           </ul>
           {group.members.length > 1 && (
-            <button onClick={handleLeaveGroup}>Leave Group</button>
+            <button className="btn btn-danger me-2 mb-2 mt-2" onClick={handleLeaveGroup}>
+              Leave Group
+            </button>
           )}
-          <button onClick={handleDeleteGroup}>Delete Group</button>
+          <button className="btn btn-danger me-2 mb-2 mt-2" onClick={handleDeleteGroup}>
+            Delete Group
+          </button>
           <button
+            className="btn btn-primary me-2 mb-2 mt-2"
             onClick={() => {
               setAddMemberForm(true);
             }}
           >
             Add Member
           </button>
-          {error && <p>{error}</p>}
+          {error && <p className="alert alert-danger">{error}</p>}
           {addMemberForm && (
             <form onSubmit={addMemberFormSubmit}>
-              <label htmlFor="memberEmail">Member Email</label>
-              <input
-                id="memberEmail"
-                type="email"
-                value={addMemberEmail}
-                onChange={(e) => {
-                  setAddMemberEmail(e.target.value);
-                }}
-              />
-              <button type="submit">submit</button>
+              <div className="mb-3">
+                <label htmlFor="memberEmail" className="form-label">
+                  Member Email
+                </label>
+                <input
+                  id="memberEmail"
+                  type="email"
+                  className="form-control"
+                  value={addMemberEmail}
+                  onChange={(e) => {
+                    setAddMemberEmail(e.target.value);
+                  }}
+                />
+              </div>
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
             </form>
           )}
-        <Transaction/>
-        </>
+          <Transaction />
+        </div>
       ) : (
         <p>Loading group details...</p>
       )}
-    </>
-  );
+    </div>
+);
 }
 
 export default ViewGroup;

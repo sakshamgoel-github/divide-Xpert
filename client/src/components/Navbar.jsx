@@ -12,37 +12,67 @@ function Navbar() {
     dispatch(reset());
     navigate("/");
   };
+
   return (
-    <>
-      <h1>DX</h1>
-      <ul>
-        <li>
-          <Link to={"/"}>Home</Link>
-        </li>
-        {user ? (
-          <>
-            <li>
-              <Link to={"/groups"}>All Groups</Link>
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div className="container">
+        <Link className="navbar-brand" to="/">
+          DX
+        </Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ml-auto">
+            <li className="nav-item">
+              <Link className="nav-link" to="/">
+                Home
+              </Link>
             </li>
-            <li>
-              <Link to={"/groups/new"}>Add Group</Link>
-            </li>
-            <li>
-              <button onClick={onLogout}>Logout</button>
-            </li>
-          </>
-        ) : (
-          <>
-            <li>
-              <Link to={"/register"}>Register</Link>
-            </li>
-            <li>
-              <Link to={"/login"}>Login</Link>
-            </li>
-          </>
-        )}
-      </ul>
-    </>
+            {user ? (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/groups">
+                    All Groups
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/groups/new">
+                    Add Group
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <button className="btn btn-link nav-link" onClick={onLogout}>
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/register">
+                    Register
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/login">
+                    Login
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
+      </div>
+    </nav>
   );
 }
 

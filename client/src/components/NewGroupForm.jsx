@@ -76,46 +76,62 @@ function NewGroupForm() {
   };
 
   return (
-    <>
-      <h1>Create Group</h1>
-      {error && <p>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="groupName">Group Name</label>
-        <input
-          type="text"
-          name="groupName"
-          id="groupName"
-          value={groupName}
-          onChange={(e) => setGroupName(e.target.value)}
-        />
-        {members.map((member) => (
-          <div key={member.id}>
-            <label htmlFor="memberEmail">Member Email</label>
-            <input
-              id="memberEmail"
-              type="email"
-              value={member.email}
-              onChange={(e) =>
-                handleMemberEmailChange(member.id, e.target.value)
-              }
-            />
-            <button type="button" onClick={handleAddMember}>
-              +{" "}
+  <div className="container mt-4">
+  <h1>Create Group</h1>
+  {error && <p className="alert alert-danger">{error}</p>}
+  <form onSubmit={handleSubmit}>
+    <div className="mb-3">
+      <label htmlFor="groupName" className="form-label">
+        Group Name
+      </label>
+      <input
+        type="text"
+        className="form-control"
+        id="groupName"
+        value={groupName}
+        onChange={(e) => setGroupName(e.target.value)}
+      />
+    </div>
+    {members.map((member) => (
+      <div key={member.id} className="mb-3">
+        <label htmlFor={`memberEmail-${member.id}`} className="form-label">
+          Member Email
+        </label>
+        <div className="input-group">
+          <input
+            id={`memberEmail-${member.id}`}
+            type="email"
+            className="form-control"
+            value={member.email}
+            onChange={(e) =>
+              handleMemberEmailChange(member.id, e.target.value)
+            }
+          />
+          <button
+            type="button"
+            className="btn btn-outline-secondary"
+            onClick={handleAddMember}
+          >
+            +
+          </button>
+          {members.length > 1 && (
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              onClick={() => handleRemoveMember(member.id)}
+            >
+              -
             </button>
-            {members.length > 1 && (
-              <button
-                type="button"
-                onClick={() => handleRemoveMember(member.id)}
-              >
-                -{" "}
-              </button>
-            )}
-          </div>
-        ))}
-        <button type="submit">Create Group</button>
-      </form>
-    </>
-  );
+          )}
+        </div>
+      </div>
+    ))}
+    <button type="submit" className="btn btn-primary">
+      Create Group
+    </button>
+  </form>
+</div>
+);
 }
 
 export default NewGroupForm;

@@ -17,15 +17,14 @@ function Login() {
     password: "",
   });
   const { email, password } = formData;
-  
+
   useEffect(() => {
-    if(isError)
-    toast.error(message)
-    if(isSuccess || user){
-      navigate("/groups")
+    if (isError) toast.error(message);
+    if (isSuccess || user) {
+      navigate("/groups");
     }
-    dispatch(reset())
-  },[user,isError,message,isSuccess,navigate,dispatch])
+    dispatch(reset());
+  }, [user, isError, message, isSuccess, navigate, dispatch]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -36,42 +35,54 @@ function Login() {
   const onSubmit = (e) => {
     e.preventDefault();
     const userData = {
-      email,password
-    }
-    dispatch(login(userData))
+      email,
+      password,
+    };
+    dispatch(login(userData));
   };
 
-  if(isLoading)
-  return <p>Loading...</p>
+  if (isLoading) return <p>Loading...</p>;
   return (
-    <>
-      <h1>Login</h1>
-      <form onSubmit={onSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            value={formData.email}
-            name="email"
-            onChange={onChange}
-          />
+    <div className="container mt-5 pt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <h1>Login</h1>
+          <form onSubmit={onSubmit}>
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                className="form-control"
+                value={email}
+                name="email"
+                onChange={onChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                className="form-control"
+                value={password}
+                name="password"
+                onChange={onChange}
+              />
+            </div>
+            <div>
+              <button type="submit" className="btn btn-primary">
+                Login
+              </button>
+            </div>
+          </form>
         </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={formData.password}
-            name="password"
-            onChange={onChange}
-          />
-        </div>
-        <div>
-          <button type="submit">Login</button>
-        </div>
-      </form>
-    </>
+      </div>
+    </div>
   );
 }
 
