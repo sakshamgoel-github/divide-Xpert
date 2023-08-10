@@ -51,7 +51,6 @@ function Transaction() {
         `http://localhost:3000/transaction`,
         transactions
       );
-      console.log(response.data)
       const size = Object.keys(response.data).length;
       if (size) setResponseData(response.data);
       else setResponseData("No transaction required");
@@ -65,7 +64,7 @@ function Transaction() {
       <form onSubmit={handleSubmit}>
         {transactions.map((transaction, index) => (
           <div className="form-row mb-3" key={index}>
-            <div className="col">
+            <div className="col mb-1">
               <select
                 required
                 className="form-select"
@@ -82,7 +81,7 @@ function Transaction() {
                 ))}
               </select>
             </div>
-            <div className="col">
+            <div className="col mb-1">
               <select
                 required
                 className="form-select"
@@ -99,7 +98,7 @@ function Transaction() {
                 ))}
               </select>
             </div>
-            <div className="col">
+            <div className="col mb-1">
               <input
                 required
                 type="number"
@@ -115,7 +114,7 @@ function Transaction() {
             <div className="col">
               <button
                 type="button"
-                className="btn btn-danger me-2 mb-2 mt-2"
+                className="btn btn-danger me-2 mb-2"
                 onClick={() => handleRemoveTransaction(index)}
               >
                 Remove

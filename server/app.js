@@ -4,7 +4,9 @@ const mongoose = require("mongoose");
 const cors = require('cors');
 const optimize = require('./optimize/optimize')
 const app = express();
-app.listen(process.env.PORT,() => {console.log("Listening on PORT 3000")});
+
+const PORT = process.env.PORT || 3000
+app.listen(PORT,() => {console.log("Listening on PORT 3000")});
 
 const url = process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/divideXpert';
 mongoose.set('strictQuery', false);
