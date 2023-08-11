@@ -1,5 +1,6 @@
 # MERN Bill Splitting Optimization
 
+#### Website Link: https://dividexpert.netlify.app/
 ## Overview
 This project aims to optimize the process of settling bills among a group of friends. It leverages the MERN (MongoDB, Express, React, Node.js) stack to create a robust and user-friendly application for splitting bills efficiently. The project utilizes priority queues (min-heap and max-heap) to calculate the optimized number of transactions required to settle debts within the group.
 
