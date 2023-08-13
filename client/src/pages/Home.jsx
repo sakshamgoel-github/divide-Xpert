@@ -7,11 +7,28 @@ function Home() {
     backgroundColor: 'black',
   };
 
+  const headingStyle = {
+    fontSize: '5rem',
+    color: '#D89216',
+    marginBottom: '1rem',
+  };
+
+  const subheadingStyle = {
+    fontSize: '1.5rem',
+    color: 'white',
+  };
+
+  const containerStyle = {
+    textAlign: 'center',
+    padding: '2rem',
+    maxWidth: '800px',
+  };
+
   return (
     <div style={fullHeightWrapperStyle}>
-      <div className="container mb-5" style={{ textAlign: 'center' }}>
-        <p style={{ fontSize: '200px',color:'#D89216' }}>Divide Xpert</p>
-        <p style={{ fontSize: '30px' ,color:'white'}}>
+      <div className="container" style={containerStyle}>
+        <h1 style={headingStyle}>Divide Xpert</h1>
+        <p style={subheadingStyle}>
           Your ultimate destination for group management and expense tracking...
         </p>
       </div>

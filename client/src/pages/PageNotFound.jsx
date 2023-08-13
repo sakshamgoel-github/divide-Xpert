@@ -2,18 +2,32 @@ function PageNotFound() {
   const fullHeightWrapperStyle = {
     minHeight: "87.2vh",
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#252525",
   };
 
+  const headingStyle = {
+    fontSize: "5rem",
+    color: "red",
+    marginBottom: "1rem",
+  };
+
+  const textBlockStyle = {
+    fontSize: "1.5rem",
+    color: "white",
+    maxWidth: "80%",
+    textAlign: "center",
+  };
+
   return (
     <div style={fullHeightWrapperStyle}>
-      <div className="container mb-5" style={{ textAlign: "center" }}>
-        <p style={{ fontSize: "200px", color: "red" }}>404Error</p>
-        <p style={{ fontSize: "50px", color: "white" }}>
-          Looks like this page embarked on a journey to find the legendary
-          &lsquo;One Piece.&rsquo; We&apos;re still navigating the Grand Line
+      <div className="container" style={{ textAlign: "center" }}>
+        <h1 style={headingStyle}>404 Error</h1>
+        <p style={textBlockStyle}>
+        The Survey Corps is out there, mapping this page&lsquo;s location.
+        Meanwhile, let&rsquo;s wait at the Wall and hope for updates.
         </p>
       </div>
     </div>
