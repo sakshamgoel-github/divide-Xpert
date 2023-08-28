@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import url from "../url";
-import PropagateLoader from "react-spinners/PropagateLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const GroupsList = () => {
   console.log(url);
@@ -25,7 +25,7 @@ const GroupsList = () => {
     <div className="container pt-3">
       <h1 className="mb-4">Groups List</h1>
       {groupsList.length == 0 ? (
-        <PropagateLoader/>
+        <ClipLoader/>
       ) : (
         groupsList.map((group) => (
           <div className="card mb-3" key={group._id}>

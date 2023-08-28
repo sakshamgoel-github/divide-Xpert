@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Transaction from "./Transaction";
 import url from "../url";
-import PropagateLoader from "react-spinners/PropagateLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function ViewGroup() {
   const navigate = useNavigate();
@@ -156,7 +156,7 @@ function ViewGroup() {
           <Transaction />
         </div>
       ) : (
-        <PropagateLoader/>
+        <ClipLoader/>
       )}
     </div>
 );

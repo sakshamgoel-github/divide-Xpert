@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
 import url from "../url";
-import PropagateLoader from "react-spinners/PropagateLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function Transaction() {
   const { id } = useParams();
@@ -136,7 +136,7 @@ function Transaction() {
         </button>
       </form>
       {loading ? (
-        <PropagateLoader/>
+        <ClipLoader/>
       ) : (
         responseData && (
           <div className="mt-4 border p-3">
