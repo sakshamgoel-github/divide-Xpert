@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { register, reset } from "../features/auth/authSlice";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 function Register() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ function Register() {
   };
 
   if (isLoading) {
-    return <p>Loading Details...</p>;
+    return <PropagateLoader/>;
   }
 
   return (

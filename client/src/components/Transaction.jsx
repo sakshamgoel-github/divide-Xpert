@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
 import url from "../url";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 function Transaction() {
   const { id } = useParams();
@@ -10,7 +11,7 @@ function Transaction() {
     { payer: "", receiver: "", amount: "" },
   ]);
   const [responseData, setResponseData] = useState("");
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     async function fetchGroupMembers() {
       try {
@@ -48,14 +49,13 @@ function Transaction() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const response = await axios.post(
-        `${url}/transaction`,
-        transactions
-      );
+      const response = await axios.post(`${url}/transaction`, transactions);
       const size = Object.keys(response.data).length;
       if (size) setResponseData(response.data);
       else setResponseData("No transaction required");
+      setLoading(false);
     } catch (error) {
       console.error("Error submitting transactions:", error.message);
     }
@@ -135,21 +135,25 @@ function Transaction() {
           Submit
         </button>
       </form>
-      {responseData && (
-        <div className="mt-4 border p-3">
-          <h3>Response from server</h3>
-          {responseData === "No transaction required" ? (
-            <h5>No transaction required</h5>
-          ) : (
-            responseData.map((ele, ind) => (
-              <div key={ind}>
-                <h5>
-                  {ele.payer} gives {ele.receiver} = {ele.amount}
-                </h5>
-              </div>
-            ))
-          )}
-        </div>
+      {loading ? (
+        <PropagateLoader/>
+      ) : (
+        responseData && (
+          <div className="mt-4 border p-3">
+            <h3>Response from server</h3>
+            {responseData === "No transaction required" ? (
+              <h5>No transaction required</h5>
+            ) : (
+              responseData.map((ele, ind) => (
+                <div key={ind}>
+                  <h5>
+                    {ele.payer} gives {ele.receiver} = {ele.amount}
+                  </h5>
+                </div>
+              ))
+            )}
+          </div>
+        )
       )}
     </div>
   );

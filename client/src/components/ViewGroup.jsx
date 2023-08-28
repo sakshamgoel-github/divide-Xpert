@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Transaction from "./Transaction";
 import url from "../url";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 function ViewGroup() {
   const navigate = useNavigate();
@@ -155,7 +156,7 @@ function ViewGroup() {
           <Transaction />
         </div>
       ) : (
-        <p>Loading group details...</p>
+        <PropagateLoader/>
       )}
     </div>
 );

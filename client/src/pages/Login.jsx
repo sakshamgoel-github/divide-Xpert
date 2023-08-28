@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { login, reset } from "../features/auth/authSlice";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 function Login() {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ function Login() {
     dispatch(login(userData));
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <PropagateLoader/>;
   return (
     <div className="container mt-5 pt-5">
       <div className="row justify-content-center">
