@@ -19,10 +19,27 @@ This project aims to optimize the process of settling bills among a group of fri
 - Priority Queues: Min-Heap, Max-Heap (for debt calculations)
 
 ## Installation and Setup
-1. Clone the repository: git clone https://github.com/sakshamgoel-github/divide-Xpert.git
-2. Navigate to the project directory: cd divide-Xpert
-3. Install server dependencies: npm install
-4. Navigate to the client directory: cd client
-5. Install client dependencies: npm run build
-6. Start the server: node app.js (from server directory)
-7. Start the client: npm run dev (from the client directory)
+1. Clone the repository: 
+```bash 
+    git clone https://github.com/sakshamgoel-github/divide-Xpert.git
+```
+2. Navigate to the project directory: 
+```bash
+    cd divide-Xpert
+```
+3. Install server dependencies: 
+```bash 
+    cd server && npm install
+```
+4. Navigate to the client directory and install dependencies:
+```bash
+    cd ../client && npm install
+```
+5. Start the server: 
+```bash
+    node ../server/app.js
+```
+6. Start the client: 
+```bash
+    npm run dev
+```
